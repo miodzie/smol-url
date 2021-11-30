@@ -1,11 +1,11 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\ShortUrlLog;
+use App\Models\ShortUrlLog;
 use Illuminate\Support\Facades\Cache;
 
 class ShortUrl extends Model
@@ -23,7 +23,7 @@ class ShortUrl extends Model
      * Get a ShortUrl if it's cached.
      * @return ShortUrl
      */
-    public static function fromCache($token): ShortUrl
+    public static function fromCache($token): ?ShortUrl
     {
         return Cache::get('short_url_' . $token);
     }

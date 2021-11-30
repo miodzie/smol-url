@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ShortUrlController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [ShortUrlController::class, 'create']);
+Route::get('/{any}', [ShortUrlController::class, 'findAndRedirect']);
+Route::resource('short-urls', ShortUrlController::class);
