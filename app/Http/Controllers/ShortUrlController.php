@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\ShortUrl;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Str;
 
 class ShortUrlController extends Controller
 {
