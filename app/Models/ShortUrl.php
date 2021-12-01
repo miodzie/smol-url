@@ -1,15 +1,26 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\ShortUrlLog;
+use App\Models\ShortUrlLog;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 
+/**
+ * @var integer $id
+ * @var string $full_url
+ * @var string $token
+ * @var Carbon $created_at
+ * @var Carbon $updated_at
+ */
 class ShortUrl extends Model
 {
+    use HasFactory;
+
     /**
      * Cache the ShortUrl.
      * @return bool
@@ -23,7 +34,7 @@ class ShortUrl extends Model
      * Get a ShortUrl if it's cached.
      * @return ShortUrl
      */
-    public static function fromCache($token): ShortUrl
+    public static function fromCache($token): ?ShortUrl
     {
         return Cache::get('short_url_' . $token);
     }
@@ -32,10 +43,40 @@ class ShortUrl extends Model
      * Create the shortened url.
      * @return string
      */
-    public function getLink(): string
+    public function getRedirectURL(): string
     {
         return config('app.url') . "/" . $this->token;
     }
+
+    // TODO: Abstract to URLGenerator class.
+    public function getURL(): string
+    {
+        $url = parse_url($this->full_url);
+        $final = '';
+
+        if (!array_key_exists('scheme', $url)) {
+            $url['scheme'] = 'http';
+        }
+        $final .= "{$url['scheme']}://";
+
+
+        if (array_key_exists('host', $url)) {
+            $final .= $url['host'];
+        }
+
+        if (array_key_exists('port', $url)) {
+            $final .= ":{$url['port']}";
+        }
+
+        $final .= "{$url['path']}";
+
+        if (array_key_exists('query', $url)) {
+            $final .= "?{$url['query']}";
+        }
+
+        return  $final;
+    }
+
 
     /**
      * Log a ShortUrl redirect.

@@ -3,46 +3,46 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use App\ShortUrl;
+use App\Models\ShortUrl;
 
 class ShortUrlsCRUDTest extends TestCase
 {
     use DatabaseMigrations;
 
-    /** @test */
-    public function any_guest_can_view_the_create_page()
+    public function test_any_guest_can_view_the_create_page()
     {
         $this->get(route('short-urls.create'))
             ->assertSee('URL:')
             ->assertSee('Go!');
     }
 
-    /** @test */
-    public function any_guest_can_create_a_short_url()
+    public function test_any_guest_can_create_a_short_url()
     {
-        $shortUrl = factory('App\ShortUrl')->make();
+        // Arrange
+        $shortUrl = ShortUrl::factory()->make();
 
+        // Act
         $response = $this->followingRedirects()->post(route('short-urls.store'), $shortUrl->toArray());
+
+        // Assert
         $response->assertStatus(200);
-
         $shortUrl = ShortUrl::whereFullUrl($shortUrl->full_url)->first();
-        $response->assertSee($shortUrl->getLink());
+        $response->assertSee($shortUrl->getRedirectURL());
     }
 
-    /** @test */
-    public function any_guest_can_view_a_short_url()
+    public function test_any_guest_can_view_a_short_url()
     {
-        $shortUrl = factory('App\ShortUrl')->create();
+        // Arrange
+        $shortUrl = ShortUrl::factory()->create();
 
+        // Act
+        // Assert
         $this->get(route('short-urls.show', $shortUrl->id))
-            ->assertSee($shortUrl->getLink());
+            ->assertSee($shortUrl->getRedirectURL());
     }
 
-    /** @test */
-    public function a_short_url_requires_a_full_url()
+    public function test_a_short_url_requires_a_full_url()
     {
         $this->createShortUrl(['full_url' => null])
             ->assertSessionHasErrors('full_url');
@@ -50,7 +50,7 @@ class ShortUrlsCRUDTest extends TestCase
 
     private function createShortUrl($overrides = [])
     {
-        $shortUrl = factory('App\ShortUrl')->make($overrides);
+        $shortUrl = ShortUrl::factory()->make($overrides);
 
         return $this->post(route('short-urls.store'), $shortUrl->toArray());
     }

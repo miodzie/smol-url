@@ -1,6 +1,6 @@
 @extends('layouts.app')
-@section('content') 
+@section('content')
         <div class="container">
-            <a href="{{$shortUrl->getLink()}}" _target="blank">{{$shortUrl->getLink()}}</a>
+            <a href="{{$shortUrl->getRedirectURL()}}" _target="blank">{{$shortUrl->getRedirectURL()}}</a>
         </div>
 @endsection

@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\ShortUrl;
+use App\Models\ShortUrl;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Str;
+use Illuminate\Routing\UrlGenerator;
 
 class ShortUrlController extends Controller
 {
@@ -20,18 +19,19 @@ class ShortUrlController extends Controller
         $token = substr($request->getPathInfo(), 1);
         $shortUrl = ShortUrl::fromCache($token);
 
-        if (! $shortUrl) {
+        if (!$shortUrl) {
             $shortUrl = ShortUrl::whereToken($token)->first();
         }
 
-        if (! $shortUrl) {
+        if (!$shortUrl) {
             abort(422, "Invalid token");
         }
 
+        // TODO: Try, catch, and still redirect even on failure.
         $shortUrl->logRedirect($request);
         $shortUrl->cache();
 
-        return redirect($shortUrl->full_url);
+        return redirect($shortUrl->getURL());
     }
 
     /**
