@@ -6,10 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\ShortUrlLog;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\Cache;
 
 class ShortUrl extends Model
 {
+    use HasFactory;
+
     /**
      * Cache the ShortUrl.
      * @return bool

@@ -18,11 +18,11 @@ class ShortUrlController extends Controller
         $token = substr($request->getPathInfo(), 1);
         $shortUrl = ShortUrl::fromCache($token);
 
-        if (! $shortUrl) {
+        if (!$shortUrl) {
             $shortUrl = ShortUrl::whereToken($token)->first();
         }
 
-        if (! $shortUrl) {
+        if (!$shortUrl) {
             abort(422, "Invalid token");
         }
 

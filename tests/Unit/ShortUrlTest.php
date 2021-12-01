@@ -3,54 +3,49 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
+use App\Models\ShortUrl;
+use Database\Factories\ShortUrlFactory;
+use Database\Factories\ShortUrlLogFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use App\ShortUrl;
 
 class ShortUrlTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
-    /** @test */
-    public function it_can_cache_itself()
+    public function test_it_can_cache_itself()
     {
-        $shortUrl = factory('App\ShortUrl')->create();
+        $shortUrl = ShortUrl::factory()->make();
         $shortUrl->cache();
         $this->assertEquals(ShortUrl::fromCache($shortUrl->token), $shortUrl);
     }
 
-    /** @test */
-    public function it_has_many_short_url_logs()
+    public function test_it_has_many_short_url_logs()
     {
-        $shortUrl = factory('App\ShortUrl')->create();
-        $logs = factory('App\ShortUrlLog', 5)->create(['short_url_id' => $shortUrl->id]);
-        
+        $shortUrl = ShortUrl::factory()->create();
+        $logs = ShortUrlLogFactory::times(5)->create(['short_url_id' => $shortUrl->id]);
+
         $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $shortUrl->logs);
 
         $this->assertEquals(count($logs), 5);
     }
 
-    /** @test */
-    public function it_can_log_a_redirect()
+    public function test_it_can_log_a_redirect()
     {
-        $shortUrl = factory('App\ShortUrl')->create();
+        $shortUrl = ShortUrlFactory::new()->create();
         $log = $shortUrl->logRedirect(request());
         $this->assertEquals($log->short_url_id, $shortUrl->id);
         $this->assertEquals($log->ip_address, request()->ip());
     }
 
-    /** @test */
-    public function it_creates_a_proper_redirect_link()
+    public function test_it_creates_a_proper_redirect_link()
     {
-        $shortUrl = factory('App\ShortUrl')->create();
+        $shortUrl = ShortUrlFactory::new()->make();
         $this->assertEquals($shortUrl->getLink(), config('app.url') . '/' . $shortUrl->token);
     }
 
-    /** @test */
-    public function it_creates_a_unique_token()
+    public function test_it_creates_a_unique_token()
     {
         $token = ShortUrl::generateUniqueToken();
-        $this->assertTrue(! ShortUrl::whereToken($token)->exists());
+        $this->assertTrue(!ShortUrl::whereToken($token)->exists());
     }
 }

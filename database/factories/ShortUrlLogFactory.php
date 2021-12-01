@@ -1,12 +1,24 @@
 <?php
 
-use Faker\Generator as Faker;
+namespace Database\Factories;
 
-$factory->define(App\ShortUrlLog::class, function (Faker $faker) {
+use App\Models\ShortUrl;
+use App\Models\ShortUrlLog;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+class ShortUrlLogFactory extends Factory
+{
+  public function definition()
+  {
     return [
-        'short_url_id' => function () {
-            return factory('ShortUrl')->create()->id;
-        },
-        'ip_address' => $faker->ipv4,
+      'ip_address' => $this->faker->ipv4,
     ];
-});
+  }
+
+  public function configure()
+  {
+    return $this->afterCreating(function (ShortUrlLog $log) {
+      return $log->short_url_id = ShortUrl::factory()->create()->id;
+    });
+  }
+}

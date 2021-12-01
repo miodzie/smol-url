@@ -1,10 +1,17 @@
 <?php
 
-use Faker\Generator as Faker;
+namespace Database\Factories;
 
-$factory->define(\App\ShortUrl::class, function (Faker $faker) {
+use App\Models\ShortUrl;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+class ShortUrlFactory extends Factory
+{
+  public function definition()
+  {
     return [
-        'full_url' => $faker->url,
-        'token' => \App\ShortUrl::generateUniqueToken(),
+      'full_url' => $this->faker->url,
+      'token' => ShortUrl::generateUniqueToken(),
     ];
-});
+  }
+}
