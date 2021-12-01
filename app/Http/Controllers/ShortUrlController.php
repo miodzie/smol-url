@@ -27,10 +27,11 @@ class ShortUrlController extends Controller
             abort(422, "Invalid token");
         }
 
+        // TODO: Try, catch, and still redirect even on failure.
         $shortUrl->logRedirect($request);
         $shortUrl->cache();
 
-        return redirect($shortUrl->full_url);
+        return redirect($shortUrl->getURL());
     }
 
     /**

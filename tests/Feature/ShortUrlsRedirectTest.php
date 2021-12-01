@@ -13,8 +13,11 @@ class ShortUrlsRedirectTest extends TestCase
 
     public function test_test_it_caches_on_successful_redirect()
     {
+        // Arrange
         $shortUrl = ShortUrlFactory::new()->create();
 
+        // Act
+        // Assert
         $this->get($shortUrl->getRedirectURL())
             ->assertStatus(302);
         $this->assertEquals(Cache::get('short_url_' . $shortUrl->token)->token, $shortUrl->token);
@@ -22,12 +25,15 @@ class ShortUrlsRedirectTest extends TestCase
 
     public function test_it_redirects_with_a_valid_token()
     {
-        $shortUrl = ShortUrlFactory::new()->create();
+        // Arrange
+        $expected = 'http://ddg.gg';
+        $shortUrl = ShortUrlFactory::new()->create(['full_url' => 'ddg.gg']);
 
-        $this->assertEquals($shortUrl->getRedirectURL(), config('app.url') . '/' . $shortUrl->token);
-
+        // Act
+        // Assert
         $this->get($shortUrl->getRedirectURL())
-            ->assertStatus(302);
+            ->assertStatus(302)
+            ->assertRedirect($expected);
     }
 
     public function test_it_doesnt_redirect_with_an_invalid_token()

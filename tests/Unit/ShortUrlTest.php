@@ -87,4 +87,17 @@ class ShortUrlTest extends TestCase
         // Assert
         $this->assertEquals($expected, $url);
     }
+
+    public function test_it_can_generate_a_valid_link_with_a_host_but_no_port()
+    {
+        // Arrange
+        $expected = 'https://ddg.gg/1234';
+        $shortUrl = ShortUrlFactory::new()->make(['full_url' => 'https://ddg.gg/1234']);
+
+        // Act
+        $url = $shortUrl->getURL();
+
+        // Assert
+        $this->assertEquals($expected, $url);
+    }
 }

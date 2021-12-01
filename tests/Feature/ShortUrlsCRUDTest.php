@@ -19,19 +19,25 @@ class ShortUrlsCRUDTest extends TestCase
 
     public function test_any_guest_can_create_a_short_url()
     {
+        // Arrange
         $shortUrl = ShortUrl::factory()->make();
 
+        // Act
         $response = $this->followingRedirects()->post(route('short-urls.store'), $shortUrl->toArray());
-        $response->assertStatus(200);
 
+        // Assert
+        $response->assertStatus(200);
         $shortUrl = ShortUrl::whereFullUrl($shortUrl->full_url)->first();
         $response->assertSee($shortUrl->getRedirectURL());
     }
 
     public function test_any_guest_can_view_a_short_url()
     {
+        // Arrange
         $shortUrl = ShortUrl::factory()->create();
 
+        // Act
+        // Assert
         $this->get(route('short-urls.show', $shortUrl->id))
             ->assertSee($shortUrl->getRedirectURL());
     }

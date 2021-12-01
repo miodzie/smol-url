@@ -52,22 +52,29 @@ class ShortUrl extends Model
     public function getURL(): string
     {
         $url = parse_url($this->full_url);
+        $final = '';
 
         if (!array_key_exists('scheme', $url)) {
             $url['scheme'] = 'http';
         }
+        $final .= "{$url['scheme']}://";
 
-        $query = '';
-        if (array_key_exists('query', $url)) {
-            $query = "?{$url['query']}";
-        }
 
         if (array_key_exists('host', $url)) {
-            return "{$url['scheme']}://${url['host']}:{$url['port']}{$url['path']}{$query}";
+            $final .= $url['host'];
         }
 
+        if (array_key_exists('port', $url)) {
+            $final .= ":{$url['port']}";
+        }
 
-        return  "{$url['scheme']}://{$url['path']}{$query}";
+        $final .= "{$url['path']}";
+
+        if (array_key_exists('query', $url)) {
+            $final .= "?{$url['query']}";
+        }
+
+        return  $final;
     }
 
 
