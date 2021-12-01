@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\ShortUrl;
 use Illuminate\Http\Request;
-use Illuminate\Routing\UrlGenerator;
 
 class ShortUrlController extends Controller
 {
@@ -17,9 +16,9 @@ class ShortUrlController extends Controller
     public function findAndRedirect(Request $request)
     {
         $token = substr($request->getPathInfo(), 1);
-        $shortUrl = ShortUrl::fromCache($token);
 
-        if (!$shortUrl) {
+        if (!($shortUrl = ShortUrl::fromCache($token))) {
+            // TODO: Replace with Repository so I can mock this call.
             $shortUrl = ShortUrl::whereToken($token)->first();
         }
 

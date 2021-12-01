@@ -34,7 +34,7 @@ class ShortUrl extends Model
      * Get a ShortUrl if it's cached.
      * @return ShortUrl
      */
-    public static function fromCache($token): ?ShortUrl
+    public static function fromCache($token): ?self
     {
         return Cache::get('short_url_' . $token);
     }

@@ -11,7 +11,20 @@ class ShortUrlsRedirectTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_test_it_caches_on_successful_redirect()
+    public function test_it_can_retrieve_from_the_cache()
+    {
+        // Arrange
+        $shortUrl = ShortUrlFactory::new()->create();
+        $shortUrl->cache();
+
+        // Act
+        $response = $this->get($shortUrl->getRedirectURL());
+
+        // Assert
+        $response->assertStatus(302);
+    }
+
+    public function test_it_caches_on_successful_redirect()
     {
         // Arrange
         $shortUrl = ShortUrlFactory::new()->create();
@@ -38,6 +51,9 @@ class ShortUrlsRedirectTest extends TestCase
 
     public function test_it_doesnt_redirect_with_an_invalid_token()
     {
+        // Arrange
+        // Act
+        // Assert
         $this->get(config('app.url') . '/' . 'randomstring')
             ->assertStatus(422);
     }
