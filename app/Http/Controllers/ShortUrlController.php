@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ShortUrl;
 use Illuminate\Http\Request;
+use Illuminate\Routing\UrlGenerator;
 
 class ShortUrlController extends Controller
 {

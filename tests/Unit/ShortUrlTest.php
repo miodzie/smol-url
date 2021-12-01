@@ -37,15 +37,54 @@ class ShortUrlTest extends TestCase
         $this->assertEquals($log->ip_address, request()->ip());
     }
 
-    public function test_it_creates_a_proper_redirect_link()
+    public function test_it_creates_a_proper_redirect_url()
     {
         $shortUrl = ShortUrlFactory::new()->make();
-        $this->assertEquals($shortUrl->getLink(), config('app.url') . '/' . $shortUrl->token);
+        $this->assertEquals($shortUrl->getRedirectURL(), config('app.url') . '/' . $shortUrl->token);
     }
 
     public function test_it_creates_a_unique_token()
     {
         $token = ShortUrl::generateUniqueToken();
         $this->assertTrue(!ShortUrl::whereToken($token)->exists());
+    }
+
+    public function test_it_can_generate_a_valid_link_without_a_scheme()
+    {
+        // Arrange
+        $expected = 'http://ddg.gg';
+        $shortUrl = ShortUrlFactory::new()->make(['full_url' => 'ddg.gg']);
+
+        // Act
+        $url = $shortUrl->getURL();
+
+        // Assert
+        $this->assertEquals($expected, $url);
+    }
+
+    public function test_it_can_generate_a_valid_link_with_a_custom_port()
+    {
+        // Arrange
+        $expected = 'http://ddg.gg:443/1234';
+        $shortUrl = ShortUrlFactory::new()->make(['full_url' => 'ddg.gg:443/1234']);
+
+        // Act
+        $url = $shortUrl->getURL();
+
+        // Assert
+        $this->assertEquals($expected, $url);
+    }
+
+    public function test_it_can_generate_a_valid_link_with_a_custom_query_string()
+    {
+        // Arrange
+        $expected = 'http://ddg.gg:443/1234?s=My%20Search%20String&enabled=true';
+        $shortUrl = ShortUrlFactory::new()->make(['full_url' => 'ddg.gg:443/1234?s=My%20Search%20String&enabled=true']);
+
+        // Act
+        $url = $shortUrl->getURL();
+
+        // Assert
+        $this->assertEquals($expected, $url);
     }
 }

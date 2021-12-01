@@ -25,7 +25,7 @@ class ShortUrlsCRUDTest extends TestCase
         $response->assertStatus(200);
 
         $shortUrl = ShortUrl::whereFullUrl($shortUrl->full_url)->first();
-        $response->assertSee($shortUrl->getLink());
+        $response->assertSee($shortUrl->getRedirectURL());
     }
 
     public function test_any_guest_can_view_a_short_url()
@@ -33,7 +33,7 @@ class ShortUrlsCRUDTest extends TestCase
         $shortUrl = ShortUrl::factory()->create();
 
         $this->get(route('short-urls.show', $shortUrl->id))
-            ->assertSee($shortUrl->getLink());
+            ->assertSee($shortUrl->getRedirectURL());
     }
 
     public function test_a_short_url_requires_a_full_url()

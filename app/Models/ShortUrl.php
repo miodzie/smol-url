@@ -7,8 +7,16 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\ShortUrlLog;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 
+/**
+ * @var integer $id
+ * @var string $full_url
+ * @var string $token
+ * @var Carbon $created_at
+ * @var Carbon $updated_at
+ */
 class ShortUrl extends Model
 {
     use HasFactory;
@@ -35,10 +43,33 @@ class ShortUrl extends Model
      * Create the shortened url.
      * @return string
      */
-    public function getLink(): string
+    public function getRedirectURL(): string
     {
         return config('app.url') . "/" . $this->token;
     }
+
+    // TODO: Abstract to URLGenerator class.
+    public function getURL(): string
+    {
+        $url = parse_url($this->full_url);
+
+        if (!array_key_exists('scheme', $url)) {
+            $url['scheme'] = 'http';
+        }
+
+        $query = '';
+        if (array_key_exists('query', $url)) {
+            $query = "?{$url['query']}";
+        }
+
+        if (array_key_exists('host', $url)) {
+            return "{$url['scheme']}://${url['host']}:{$url['port']}{$url['path']}{$query}";
+        }
+
+
+        return  "{$url['scheme']}://{$url['path']}{$query}";
+    }
+
 
     /**
      * Log a ShortUrl redirect.

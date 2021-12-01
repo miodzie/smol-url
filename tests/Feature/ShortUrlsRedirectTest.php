@@ -15,7 +15,7 @@ class ShortUrlsRedirectTest extends TestCase
     {
         $shortUrl = ShortUrlFactory::new()->create();
 
-        $this->get($shortUrl->getLink())
+        $this->get($shortUrl->getRedirectURL())
             ->assertStatus(302);
         $this->assertEquals(Cache::get('short_url_' . $shortUrl->token)->token, $shortUrl->token);
     }
@@ -24,9 +24,9 @@ class ShortUrlsRedirectTest extends TestCase
     {
         $shortUrl = ShortUrlFactory::new()->create();
 
-        $this->assertEquals($shortUrl->getLink(), config('app.url') . '/' . $shortUrl->token);
+        $this->assertEquals($shortUrl->getRedirectURL(), config('app.url') . '/' . $shortUrl->token);
 
-        $this->get($shortUrl->getLink())
+        $this->get($shortUrl->getRedirectURL())
             ->assertStatus(302);
     }
 
