@@ -18,6 +18,7 @@ class CreateTinyUrlsTable extends Migration
             $table->string('full_url');
             $table->string('token')->unique();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

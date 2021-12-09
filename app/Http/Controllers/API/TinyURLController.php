@@ -15,4 +15,9 @@ class TinyUrlController extends Controller
     public function store()
     {
     }
+
+    public function delete()
+    {
+
+    }
 }

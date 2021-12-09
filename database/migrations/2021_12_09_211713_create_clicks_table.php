@@ -18,6 +18,7 @@ class CreateClicksTable extends Migration
             $table->unsignedBigInteger('tiny_url_id');
             $table->foreign('tiny_url_id')->references('id')->on('tiny_urls');
             $table->string('ip_address');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
