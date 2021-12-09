@@ -22,7 +22,7 @@ class RedirectController extends Controller
         }
 
         // TODO: Try, catch, and still redirect even on failure.
-        $shortUrl->logRedirect($request);
+        $shortUrl->clicked($request);
         $shortUrl->cache();
 
         return redirect($shortUrl->getURL());

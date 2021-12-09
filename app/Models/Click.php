@@ -8,13 +8,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Click extends Model
 {
-    use HasFactory;
-    use SoftDeletes;
+    use HasFactory, SoftDeletes;
 
-    /**
-     * ShortUrlLogs belong to one ShortUrl.
-     * @return Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
     public function tinyUrl()
     {
         return $this->belongsTo(TinyUrl::class);

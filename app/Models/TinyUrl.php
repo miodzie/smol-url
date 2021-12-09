@@ -20,8 +20,22 @@ use Illuminate\Support\Facades\Cache;
  */
 class TinyUrl extends Model
 {
-    use SoftDeletes;
-    use HasFactory;
+    use HasFactory, SoftDeletes;
+
+    public function clicks()
+    {
+        return $this->hasMany(Click::class);
+    }
+
+    public function clicked(Request $request): Click
+    {
+        $click = new Click;
+        $click->ip_address = $request->ip();
+        $click->tinyUrl()->associate($this);
+        $click->save();
+
+        return $click;
+    }
 
     /**
      * Cache the ShortUrl.
@@ -79,18 +93,6 @@ class TinyUrl extends Model
         return  $final;
     }
 
-
-    // TODO: Refactor name to logClick? $url->clicked()?
-    public function logRedirect(Request $request): Click
-    {
-        $click = new Click;
-        $click->ip_address = $request->ip();
-        $click->tinyUrl()->associate($this);
-        $click->save();
-
-        return $click;
-    }
-
     /**
      * Generates a unique token for a ShortUrl.
      * @return string
@@ -105,14 +107,5 @@ class TinyUrl extends Model
         }
 
         return $token;
-    }
-
-    /**
-     * ShortUrls have many ShortUrlLogs.
-     * @return Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function logs()
-    {
-        return $this->hasMany(Click::class);
     }
 }

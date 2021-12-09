@@ -21,20 +21,20 @@ class TinyUrlTest extends TestCase
         $this->assertEquals(TinyUrl::fromCache($tinyUrl->token), $tinyUrl);
     }
 
-    public function test_it_has_many_short_url_logs()
+    public function test_it_has_many_clicks()
     {
         $tinyUrl = TinyUrl::factory()->create();
-        $logs = ClickFactory::times(5)->create(['tiny_url_id' => $tinyUrl->id]);
+        $clicks = ClickFactory::times(5)->create(['tiny_url_id' => $tinyUrl->id]);
 
-        $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $tinyUrl->logs);
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $tinyUrl->clicks);
 
-        $this->assertEquals(count($logs), 5);
+        $this->assertEquals(count($clicks), 5);
     }
 
-    public function test_it_can_log_a_redirect()
+    public function test_it_can_log_a_click()
     {
         $tinyUrl = TinyUrlFactory::new()->create();
-        $click = $tinyUrl->logRedirect(request());
+        $click = $tinyUrl->clicked(request());
         $this->assertEquals($click->tiny_url_id, $tinyUrl->id);
         $this->assertEquals($click->ip_address, request()->ip());
     }
