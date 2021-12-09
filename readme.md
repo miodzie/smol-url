@@ -1,8 +1,10 @@
-## URL Shortener
+## smol-url
 
 Playground for me to learn. 
-Checking out new features in Laravel, expirmenting with TDD, and
-eventually Vue.js
+Checking out new features in Laravel, expirmenting with TDD, Vue.js
+
+
+You can find the front-end [here](https://github.com/miodzie/smolurl-vue/).
 
 
 Laravel is fine for this, but it's kinda heavy for a simple app.
