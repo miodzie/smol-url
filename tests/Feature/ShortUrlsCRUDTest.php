@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use App\Models\ShortUrl;
+use App\Models\TinyUrl;
 
 class ShortUrlsCRUDTest extends TestCase
 {
@@ -20,21 +20,21 @@ class ShortUrlsCRUDTest extends TestCase
     public function test_any_guest_can_create_a_short_url()
     {
         // Arrange
-        $shortUrl = ShortUrl::factory()->make();
+        $shortUrl = TinyUrl::factory()->make();
 
         // Act
         $response = $this->followingRedirects()->post(route('short-urls.store'), $shortUrl->toArray());
 
         // Assert
         $response->assertStatus(200);
-        $shortUrl = ShortUrl::whereFullUrl($shortUrl->full_url)->first();
+        $shortUrl = TinyUrl::whereFullUrl($shortUrl->full_url)->first();
         $response->assertSee($shortUrl->getRedirectURL());
     }
 
     public function test_any_guest_can_view_a_short_url()
     {
         // Arrange
-        $shortUrl = ShortUrl::factory()->create();
+        $shortUrl = TinyUrl::factory()->create();
 
         // Act
         // Assert
@@ -50,7 +50,7 @@ class ShortUrlsCRUDTest extends TestCase
 
     private function createShortUrl($overrides = [])
     {
-        $shortUrl = ShortUrl::factory()->make($overrides);
+        $shortUrl = TinyUrl::factory()->make($overrides);
 
         return $this->post(route('short-urls.store'), $shortUrl->toArray());
     }

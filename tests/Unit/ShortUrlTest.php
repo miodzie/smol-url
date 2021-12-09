@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
-use App\Models\ShortUrl;
+use App\Models\TinyUrl;
 use Database\Factories\ShortUrlFactory;
 use Database\Factories\ShortUrlLogFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -14,14 +14,14 @@ class ShortUrlTest extends TestCase
 
     public function test_it_can_cache_itself()
     {
-        $shortUrl = ShortUrl::factory()->make();
+        $shortUrl = TinyUrl::factory()->make();
         $shortUrl->cache();
-        $this->assertEquals(ShortUrl::fromCache($shortUrl->token), $shortUrl);
+        $this->assertEquals(TinyUrl::fromCache($shortUrl->token), $shortUrl);
     }
 
     public function test_it_has_many_short_url_logs()
     {
-        $shortUrl = ShortUrl::factory()->create();
+        $shortUrl = TinyUrl::factory()->create();
         $logs = ShortUrlLogFactory::times(5)->create(['short_url_id' => $shortUrl->id]);
 
         $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $shortUrl->logs);
@@ -45,8 +45,8 @@ class ShortUrlTest extends TestCase
 
     public function test_it_creates_a_unique_token()
     {
-        $token = ShortUrl::generateUniqueToken();
-        $this->assertTrue(!ShortUrl::whereToken($token)->exists());
+        $token = TinyUrl::generateUniqueToken();
+        $this->assertTrue(!TinyUrl::whereToken($token)->exists());
     }
 
     public function test_it_can_generate_a_valid_link_without_a_scheme()

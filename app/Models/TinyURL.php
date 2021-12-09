@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\Models\ShortUrlLog;
+use App\Models\Click;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Cache;
  * @var Carbon $created_at
  * @var Carbon $updated_at
  */
-class ShortUrl extends Model
+class TinyURL extends Model
 {
     use HasFactory;
 
@@ -32,7 +32,7 @@ class ShortUrl extends Model
 
     /**
      * Get a ShortUrl if it's cached.
-     * @return ShortUrl
+     * @return TinyURL
      */
     public static function fromCache($token): ?self
     {
@@ -80,11 +80,11 @@ class ShortUrl extends Model
 
     /**
      * Log a ShortUrl redirect.
-     * @return ShortUrlLog
+     * @return Click
      */
-    public function logRedirect(Request $request): ShortUrlLog
+    public function logRedirect(Request $request): Click
     {
-        $log = new ShortUrlLog;
+        $log = new Click;
         $log->ip_address = $request->ip();
         $log->short_url_id = $this->id;
         $log->save();
@@ -101,7 +101,7 @@ class ShortUrl extends Model
         $token = Str::random(rand(6, 20));
         // TODO: This is probably not scalable and/or for big data sets, for low traffic it's likely
         // fine.
-        while (ShortUrl::whereToken($token)->exists()) {
+        while (TinyURL::whereToken($token)->exists()) {
             $token = Str::random(rand(6, 20));
         }
 
@@ -114,6 +114,6 @@ class ShortUrl extends Model
      */
     public function logs()
     {
-        return $this->hasMany(ShortUrlLog::class);
+        return $this->hasMany(Click::class);
     }
 }

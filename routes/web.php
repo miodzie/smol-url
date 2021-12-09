@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\ShortUrlController;
+use App\Http\Controllers\TinyURLController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [ShortUrlController::class, 'create']);
-Route::get('/{any}', [ShortUrlController::class, 'findAndRedirect']);
-Route::resource('short-urls', ShortUrlController::class);
+Route::get('/', [TinyURLController::class, 'create']);
+Route::get('/{any}', [TinyURLController::class, 'findAndRedirect']);
+Route::resource('short-urls', TinyURLController::class);

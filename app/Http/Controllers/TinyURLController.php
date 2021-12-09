@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ShortUrl;
+use App\Models\TinyUrl;
 use Illuminate\Http\Request;
 
-class ShortUrlController extends Controller
+class TinyURLController extends Controller
 {
 
     /**
@@ -17,9 +17,9 @@ class ShortUrlController extends Controller
     {
         $token = substr($request->getPathInfo(), 1);
 
-        if (!($shortUrl = ShortUrl::fromCache($token))) {
+        if (!($shortUrl = TinyUrl::fromCache($token))) {
             // TODO: Replace with Repository so I can mock this call.
-            $shortUrl = ShortUrl::whereToken($token)->first();
+            $shortUrl = TinyUrl::whereToken($token)->first();
         }
 
         if (!$shortUrl) {
@@ -56,9 +56,9 @@ class ShortUrlController extends Controller
         $regex = '/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/';
         $this->validate($request, ['full_url' => 'required|regex:' . $regex]);
 
-        $shortUrl = new ShortUrl;
+        $shortUrl = new TinyUrl;
         $shortUrl->full_url = $request->full_url;
-        $shortUrl->token = ShortUrl::generateUniqueToken();
+        $shortUrl->token = TinyUrl::generateUniqueToken();
         $shortUrl->save();
 
         return redirect(route('short-urls.show', $shortUrl->id));
@@ -70,7 +70,7 @@ class ShortUrlController extends Controller
      * @param  \App\ShortUrl  $shortUrl
      * @return \Illuminate\Http\Response
      */
-    public function show(ShortUrl $shortUrl)
+    public function show(TinyUrl $shortUrl)
     {
         return view('short-urls.show', compact('shortUrl'));
     }
