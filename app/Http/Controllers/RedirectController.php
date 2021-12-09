@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class RedirectController extends Controller
 {
     // TODO: Abstract to RedirectRequester Interface.
-    public function redirect(Request $request)
+    public function handle(Request $request)
     {
         $token = substr($request->getPathInfo(), 1);
 
