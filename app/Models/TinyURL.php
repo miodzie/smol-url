@@ -17,8 +17,9 @@ use Illuminate\Support\Facades\Cache;
  * @var Carbon $created_at
  * @var Carbon $updated_at
  */
-class TinyURL extends Model
+class TinyUrl extends Model
 {
+
     use HasFactory;
 
     /**
@@ -32,7 +33,7 @@ class TinyURL extends Model
 
     /**
      * Get a ShortUrl if it's cached.
-     * @return TinyURL
+     * @return TinyUrl
      */
     public static function fromCache($token): ?self
     {
@@ -78,18 +79,15 @@ class TinyURL extends Model
     }
 
 
-    /**
-     * Log a ShortUrl redirect.
-     * @return Click
-     */
+    // TODO: Refactor name to logClick? $url->clicked()?
     public function logRedirect(Request $request): Click
     {
-        $log = new Click;
-        $log->ip_address = $request->ip();
-        $log->short_url_id = $this->id;
-        $log->save();
+        $click = new Click;
+        $click->ip_address = $request->ip();
+        $click->tinyUrl()->associate($this);
+        $click->save();
 
-        return $log;
+        return $click;
     }
 
     /**
@@ -101,7 +99,7 @@ class TinyURL extends Model
         $token = Str::random(rand(6, 20));
         // TODO: This is probably not scalable and/or for big data sets, for low traffic it's likely
         // fine.
-        while (TinyURL::whereToken($token)->exists()) {
+        while (TinyUrl::whereToken($token)->exists()) {
             $token = Str::random(rand(6, 20));
         }
 

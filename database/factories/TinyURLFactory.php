@@ -5,7 +5,7 @@ namespace Database\Factories;
 use App\Models\TinyUrl;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class TinyURLFactory extends Factory
+class TinyUrlFactory extends Factory
 {
   public function definition()
   {

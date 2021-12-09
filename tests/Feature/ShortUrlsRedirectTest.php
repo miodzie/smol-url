@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use Database\Factories\ShortUrlFactory;
+use Database\Factories\TinyUrlFactory;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
@@ -14,7 +14,7 @@ class ShortUrlsRedirectTest extends TestCase
     public function test_it_can_retrieve_from_the_cache()
     {
         // Arrange
-        $shortUrl = ShortUrlFactory::new()->create();
+        $shortUrl = TinyUrlFactory::new()->create();
         $shortUrl->cache();
 
         // Act
@@ -27,7 +27,7 @@ class ShortUrlsRedirectTest extends TestCase
     public function test_it_caches_on_successful_redirect()
     {
         // Arrange
-        $shortUrl = ShortUrlFactory::new()->create();
+        $shortUrl = TinyUrlFactory::new()->create();
 
         // Act
         // Assert
@@ -40,7 +40,7 @@ class ShortUrlsRedirectTest extends TestCase
     {
         // Arrange
         $expected = 'http://ddg.gg';
-        $shortUrl = ShortUrlFactory::new()->create(['full_url' => 'ddg.gg']);
+        $shortUrl = TinyUrlFactory::new()->create(['full_url' => 'ddg.gg']);
 
         // Act
         // Assert

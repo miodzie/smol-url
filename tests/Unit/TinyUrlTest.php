@@ -4,42 +4,44 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 use App\Models\TinyUrl;
-use Database\Factories\ShortUrlFactory;
-use Database\Factories\ShortUrlLogFactory;
+use Database\Factories\TinyUrlFactory;
+use Database\Factories\ClickFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class ShortUrlTest extends TestCase
+// TODO: Much of these methods should be extracted out to their own classes.
+// Can replace them with a Facade afterwards.
+class TinyUrlTest extends TestCase
 {
     use RefreshDatabase;
 
     public function test_it_can_cache_itself()
     {
-        $shortUrl = TinyUrl::factory()->make();
-        $shortUrl->cache();
-        $this->assertEquals(TinyUrl::fromCache($shortUrl->token), $shortUrl);
+        $tinyUrl = TinyUrl::factory()->make();
+        $tinyUrl->cache();
+        $this->assertEquals(TinyUrl::fromCache($tinyUrl->token), $tinyUrl);
     }
 
     public function test_it_has_many_short_url_logs()
     {
-        $shortUrl = TinyUrl::factory()->create();
-        $logs = ShortUrlLogFactory::times(5)->create(['short_url_id' => $shortUrl->id]);
+        $tinyUrl = TinyUrl::factory()->create();
+        $logs = ClickFactory::times(5)->create(['tiny_url_id' => $tinyUrl->id]);
 
-        $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $shortUrl->logs);
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $tinyUrl->logs);
 
         $this->assertEquals(count($logs), 5);
     }
 
     public function test_it_can_log_a_redirect()
     {
-        $shortUrl = ShortUrlFactory::new()->create();
-        $log = $shortUrl->logRedirect(request());
-        $this->assertEquals($log->short_url_id, $shortUrl->id);
-        $this->assertEquals($log->ip_address, request()->ip());
+        $tinyUrl = TinyUrlFactory::new()->create();
+        $click = $tinyUrl->logRedirect(request());
+        $this->assertEquals($click->tiny_url_id, $tinyUrl->id);
+        $this->assertEquals($click->ip_address, request()->ip());
     }
 
     public function test_it_creates_a_proper_redirect_url()
     {
-        $shortUrl = ShortUrlFactory::new()->make();
+        $shortUrl = TinyUrlFactory::new()->make();
         $this->assertEquals($shortUrl->getRedirectURL(), config('app.url') . '/' . $shortUrl->token);
     }
 
@@ -53,7 +55,7 @@ class ShortUrlTest extends TestCase
     {
         // Arrange
         $expected = 'http://ddg.gg';
-        $shortUrl = ShortUrlFactory::new()->make(['full_url' => 'ddg.gg']);
+        $shortUrl = TinyUrlFactory::new()->make(['full_url' => 'ddg.gg']);
 
         // Act
         $url = $shortUrl->getURL();
@@ -66,7 +68,7 @@ class ShortUrlTest extends TestCase
     {
         // Arrange
         $expected = 'http://ddg.gg:443/1234';
-        $shortUrl = ShortUrlFactory::new()->make(['full_url' => 'ddg.gg:443/1234']);
+        $shortUrl = TinyUrlFactory::new()->make(['full_url' => 'ddg.gg:443/1234']);
 
         // Act
         $url = $shortUrl->getURL();
@@ -79,7 +81,7 @@ class ShortUrlTest extends TestCase
     {
         // Arrange
         $expected = 'http://ddg.gg:443/1234?s=My%20Search%20String&enabled=true';
-        $shortUrl = ShortUrlFactory::new()->make(['full_url' => 'ddg.gg:443/1234?s=My%20Search%20String&enabled=true']);
+        $shortUrl = TinyUrlFactory::new()->make(['full_url' => 'ddg.gg:443/1234?s=My%20Search%20String&enabled=true']);
 
         // Act
         $url = $shortUrl->getURL();
@@ -92,7 +94,7 @@ class ShortUrlTest extends TestCase
     {
         // Arrange
         $expected = 'https://ddg.gg/1234';
-        $shortUrl = ShortUrlFactory::new()->make(['full_url' => 'https://ddg.gg/1234']);
+        $shortUrl = TinyUrlFactory::new()->make(['full_url' => 'https://ddg.gg/1234']);
 
         // Act
         $url = $shortUrl->getURL();

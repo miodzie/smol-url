@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\API\TinyURLController;
+use App\Http\Controllers\API\TinyUrlController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,8 +15,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/url', [TinyURLController::class, 'all']);
-Route::post('/url', [TinyURLController::class, 'store']);
+Route::get('/tiny-url', [TinyUrlController::class, 'all']);
+Route::post('/tiny-url', [TinyUrlController::class, 'store']);
+Route::delete('tiny-url', [TinyUrlController::class, 'delete']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

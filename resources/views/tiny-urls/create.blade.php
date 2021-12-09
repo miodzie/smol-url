@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <form action="{{route('short-urls.store')}}" method="POST"> 
+    <form action="{{route('tiny-urls.store')}}" method="POST">
         @csrf
         <div class="container">
             <div class="input-group mb-3">

@@ -13,8 +13,8 @@ class Click extends Model
      * ShortUrlLogs belong to one ShortUrl.
      * @return Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function tinyURL()
+    public function tinyUrl()
     {
-        return $this->belongsTo(App\ShortUrl::class);
+        return $this->belongsTo(TinyUrl::class);
     }
 }
