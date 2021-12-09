@@ -2,11 +2,11 @@
 
 namespace Database\Factories;
 
-use App\Models\ShortUrl;
-use App\Models\ShortUrlLog;
+use App\Models\TinyUrl;
+use App\Models\Click;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ShortUrlLogFactory extends Factory
+class ClickFactory extends Factory
 {
   public function definition()
   {
@@ -17,8 +17,8 @@ class ShortUrlLogFactory extends Factory
 
   public function configure()
   {
-    return $this->afterCreating(function (ShortUrlLog $log) {
-      return $log->short_url_id = ShortUrl::factory()->create()->id;
+    return $this->afterCreating(function (Click $log) {
+      return $log->tiny_url_id = TinyUrl::factory()->create()->id;
     });
   }
 }

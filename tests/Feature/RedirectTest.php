@@ -2,23 +2,23 @@
 
 namespace Tests\Feature;
 
-use Database\Factories\ShortUrlFactory;
+use Database\Factories\TinyUrlFactory;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 
-class ShortUrlsRedirectTest extends TestCase
+class RedirectTest extends TestCase
 {
     use RefreshDatabase;
 
     public function test_it_can_retrieve_from_the_cache()
     {
         // Arrange
-        $shortUrl = ShortUrlFactory::new()->create();
-        $shortUrl->cache();
+        $tinyUrl = TinyUrlFactory::new()->create();
+        $tinyUrl->cache();
 
         // Act
-        $response = $this->get($shortUrl->getRedirectURL());
+        $response = $this->get($tinyUrl->getRedirectURL());
 
         // Assert
         $response->assertStatus(302);
@@ -27,24 +27,24 @@ class ShortUrlsRedirectTest extends TestCase
     public function test_it_caches_on_successful_redirect()
     {
         // Arrange
-        $shortUrl = ShortUrlFactory::new()->create();
+        $tinyUrl = TinyUrlFactory::new()->create();
 
         // Act
         // Assert
-        $this->get($shortUrl->getRedirectURL())
+        $this->get($tinyUrl->getRedirectURL())
             ->assertStatus(302);
-        $this->assertEquals(Cache::get('short_url_' . $shortUrl->token)->token, $shortUrl->token);
+        $this->assertEquals(Cache::get('short_url_' . $tinyUrl->token)->token, $tinyUrl->token);
     }
 
     public function test_it_redirects_with_a_valid_token()
     {
         // Arrange
         $expected = 'http://ddg.gg';
-        $shortUrl = ShortUrlFactory::new()->create(['full_url' => 'ddg.gg']);
+        $tinyUrl = TinyUrlFactory::new()->create(['full_url' => 'ddg.gg']);
 
         // Act
         // Assert
-        $this->get($shortUrl->getRedirectURL())
+        $this->get($tinyUrl->getRedirectURL())
             ->assertStatus(302)
             ->assertRedirect($expected);
     }

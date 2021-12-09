@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ShortUrlLog extends Model
+class Click extends Model
 {
     use HasFactory;
 
@@ -13,8 +13,8 @@ class ShortUrlLog extends Model
      * ShortUrlLogs belong to one ShortUrl.
      * @return Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function shortUrl()
+    public function tinyUrl()
     {
-        return $this->belongsTo(App\ShortUrl::class);
+        return $this->belongsTo(TinyUrl::class);
     }
 }

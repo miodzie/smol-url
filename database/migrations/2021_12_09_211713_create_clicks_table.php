@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class CreateShortUrlLogsTable extends Migration
+class CreateClicksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateShortUrlLogsTable extends Migration
      */
     public function up()
     {
-        Schema::create('short_url_logs', function (Blueprint $table) {
+        Schema::create('clicks', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('short_url_id');
-            $table->foreign('short_url_id')->references('id')->on('short_urls');
+            $table->unsignedBigInteger('tiny_url_id');
+            $table->foreign('tiny_url_id')->references('id')->on('tiny_urls');
             $table->string('ip_address');
             $table->timestamps();
         });
@@ -29,6 +29,6 @@ class CreateShortUrlLogsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('short_url_logs');
+        Schema::dropIfExists('clicks');
     }
 }
