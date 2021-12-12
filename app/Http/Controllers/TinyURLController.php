@@ -14,9 +14,6 @@ class TinyUrlController extends Controller
 
     public function store(Request $request)
     {
-        // Regex "borrowed" from
-        // @see https://laracasts.com/discuss/channels/general-discussion/url-validation
-        $regex = '/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/';
         $this->validate($request, ['full_url' => 'required|regex:' . $regex]);
 
         $tinyUrl = new TinyUrl;
