@@ -15,9 +15,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/tiny-url', [TinyUrlController::class, 'all']);
-Route::post('/tiny-url', [TinyUrlController::class, 'store']);
-Route::delete('tiny-url', [TinyUrlController::class, 'delete']);
+Route::get('/urls', [TinyUrlController::class, 'all']);
+Route::post('/urls', [TinyUrlController::class, 'store']);
+Route::delete('/urls', [TinyUrlController::class, 'delete']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

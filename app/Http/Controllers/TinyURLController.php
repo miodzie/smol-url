@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\TinyUrl;
+use App\TinyUrls\UrlValidator;
 use Illuminate\Http\Request;
 
 class TinyUrlController extends Controller
@@ -14,7 +15,7 @@ class TinyUrlController extends Controller
 
     public function store(Request $request)
     {
-        $this->validate($request, ['full_url' => 'required|regex:' . $regex]);
+        $this->validate($request, ['full_url' => 'required|regex:' . UrlValidator::REGEX]);
 
         $tinyUrl = new TinyUrl;
         $tinyUrl->full_url = $request->full_url;
