@@ -1,4 +1,4 @@
-## smol-url
+## tiny-url
 
 Playground for me to learn. 
 Checking out new features in Laravel, expirmenting with TDD, Vue.js
