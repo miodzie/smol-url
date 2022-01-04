@@ -102,4 +102,17 @@ class TinyUrlTest extends TestCase
         // Assert
         $this->assertEquals($expected, $url);
     }
+
+    public function test_it_can_generate_a_link_with_no_path()
+    {
+        // Arrange
+        $expected = 'https://ddg.gg';
+        $shortUrl = TinyUrlFactory::new()->make(['url' => 'https://ddg.gg']);
+
+        // Act
+        $url = $shortUrl->getURL();
+
+        // Assert
+        $this->assertEquals($expected, $url);
+    }
 }

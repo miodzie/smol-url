@@ -29,7 +29,7 @@ class TinyUrl extends Model
 
     public function clicked(Request $request): Click
     {
-        $click = new Click;
+        $click = new Click();
         $click->ip_address = $request->ip();
         $click->tinyUrl()->associate($this);
         $click->save();
@@ -84,7 +84,9 @@ class TinyUrl extends Model
             $final .= ":{$url['port']}";
         }
 
-        $final .= "{$url['path']}";
+        if (array_key_exists('path', $url)) {
+            $final .= "{$url['path']}";
+        }
 
         if (array_key_exists('query', $url)) {
             $final .= "?{$url['query']}";

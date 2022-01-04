@@ -63,9 +63,10 @@ export default {
       }
       console.log(data);
       api.post('urls', data).then(r => {
-        console.log(r)
+        this.$router.push('mine');
       })
       .catch(e => {
+          // TODO: Add validation error messages.
           this.error = "someting brokedez oops" 
           console.log(e)
         })
