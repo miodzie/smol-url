@@ -67,7 +67,7 @@ class TinyUrl extends Model
     // TODO: Abstract to URLGenerator class.
     public function getURL(): string
     {
-        $url = parse_url($this->full_url);
+        $url = parse_url($this->url);
         $final = '';
 
         if (!array_key_exists('scheme', $url)) {

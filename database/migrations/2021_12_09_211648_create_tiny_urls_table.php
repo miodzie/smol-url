@@ -15,7 +15,7 @@ class CreateTinyUrlsTable extends Migration
     {
         Schema::create('tiny_urls', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('full_url');
+            $table->string('url');
             $table->string('token')->unique();
             $table->timestamps();
             $table->softDeletes();

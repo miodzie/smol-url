@@ -1,4 +1,5 @@
-<?php
+<?php 
+declare(strict_types=1);
 
 namespace App\Http\Controllers\API;
 
@@ -18,17 +19,25 @@ class TinyUrlController extends Controller
 
     public function store(Request $request)
     {
-        $this->validate($request, ['full_url' => [
+        $url = $request->input('url');
+        // TODO: this is terrible, clean up.
+        if(!strpos($url, 'http://')) {
+          $request['url'] = "http://{$url}";
+        }
+
+        $this->validate($request, 
+          ['url' => [
             'required',
             'regex:' . UrlValidator::REGEX
-        ]]);
+          ]
+        ]);
 
-        $tinyUrl = new TinyUrl;
-        $tinyUrl->full_url = $request->full_url;
+        $tinyUrl = new TinyUrl();
+        $tinyUrl->url = $request->url;
         $tinyUrl->token = TinyUrl::generateUniqueToken();
         $tinyUrl->save();
 
-        return JsonResponse::create($tinyUrl, Response::HTTP_CREATED);
+        return JsonResponse::create($tinyUrl->refresh(), Response::HTTP_CREATED);
     }
 
     public function delete()

@@ -12,7 +12,7 @@ class TinyUrlStoreTest extends TestCase
 {
     use RefreshDatabase;
 
-    public const ROUTE = '/api/tiny-url';
+    public const ROUTE = '/api/urls';
 
     public function test_create_a_tiny_url()
     {
@@ -21,11 +21,27 @@ class TinyUrlStoreTest extends TestCase
 
         // Act
         $result = $this->post(self::ROUTE, $turl->toArray());
-        $turl = TinyUrl::findOrFail($result->json('id'));
 
         // Assert
         $result->assertCreated();
 
+        $turl = TinyUrl::findOrFail($result->json('id'));
         $result->assertJson($turl->toArray());
+    }
+
+    public function test_it_prepends_http_if_it_doesnt_exist()
+    {
+        // Arrange
+        $turl = TinyUrlFactory::new()->make(['url' => 'example.com/']);
+
+        // Act
+        $result = $this->post(self::ROUTE, ['url' => $turl->url]);
+
+        // Assert
+        $result->assertCreated();
+
+        $turl = TinyUrl::findOrFail($result->json('id'));
+        $this->assertEquals('http://example.com/', $turl->url);
+        /* $result->assertJson($turl->toArray()); */
     }
 }

@@ -10,7 +10,7 @@ class TinyUrlFactory extends Factory
   public function definition()
   {
     return [
-      'full_url' => $this->faker->url(),
+      'url' => $this->faker->url(),
       'token' => TinyUrl::generateUniqueToken(),
     ];
   }

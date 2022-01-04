@@ -55,7 +55,7 @@ class TinyUrlTest extends TestCase
     {
         // Arrange
         $expected = 'http://ddg.gg';
-        $shortUrl = TinyUrlFactory::new()->make(['full_url' => 'ddg.gg']);
+        $shortUrl = TinyUrlFactory::new()->make(['url' => 'ddg.gg']);
 
         // Act
         $url = $shortUrl->getURL();
@@ -68,7 +68,7 @@ class TinyUrlTest extends TestCase
     {
         // Arrange
         $expected = 'http://ddg.gg:443/1234';
-        $shortUrl = TinyUrlFactory::new()->make(['full_url' => 'ddg.gg:443/1234']);
+        $shortUrl = TinyUrlFactory::new()->make(['url' => 'ddg.gg:443/1234']);
 
         // Act
         $url = $shortUrl->getURL();
@@ -81,7 +81,7 @@ class TinyUrlTest extends TestCase
     {
         // Arrange
         $expected = 'http://ddg.gg:443/1234?s=My%20Search%20String&enabled=true';
-        $shortUrl = TinyUrlFactory::new()->make(['full_url' => 'ddg.gg:443/1234?s=My%20Search%20String&enabled=true']);
+        $shortUrl = TinyUrlFactory::new()->make(['url' => 'ddg.gg:443/1234?s=My%20Search%20String&enabled=true']);
 
         // Act
         $url = $shortUrl->getURL();
@@ -94,7 +94,7 @@ class TinyUrlTest extends TestCase
     {
         // Arrange
         $expected = 'https://ddg.gg/1234';
-        $shortUrl = TinyUrlFactory::new()->make(['full_url' => 'https://ddg.gg/1234']);
+        $shortUrl = TinyUrlFactory::new()->make(['url' => 'https://ddg.gg/1234']);
 
         // Act
         $url = $shortUrl->getURL();

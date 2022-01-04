@@ -40,7 +40,7 @@ class RedirectTest extends TestCase
     {
         // Arrange
         $expected = 'http://ddg.gg';
-        $tinyUrl = TinyUrlFactory::new()->create(['full_url' => 'ddg.gg']);
+        $tinyUrl = TinyUrlFactory::new()->create(['url' => 'ddg.gg']);
 
         // Act
         // Assert

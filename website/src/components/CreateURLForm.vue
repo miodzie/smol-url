@@ -61,7 +61,8 @@ export default {
       let data = {
         url: this.url,
       }
-      api.post('tiny-url', data).then(r => {
+      console.log(data);
+      api.post('urls', data).then(r => {
         console.log(r)
       })
       .catch(e => {
