@@ -17,7 +17,7 @@ class TinyUrlController extends Controller
     {
         $this->validate($request, ['full_url' => 'required|regex:' . UrlValidator::REGEX]);
 
-        $tinyUrl = new TinyUrl;
+        $tinyUrl = new TinyUrl();
         $tinyUrl->full_url = $request->full_url;
         $tinyUrl->token = TinyUrl::generateUniqueToken();
         $tinyUrl->save();

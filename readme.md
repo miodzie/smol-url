@@ -25,6 +25,11 @@ I'd probably prefer Symfony or Go instead.
 If I wanted to be REALLY fast, I'd use Phalcon (I'll check it out at somepoint I
 swear)
 
+## TODO
+- Admin dashboard.
+- Docker (Maybe use this as a pet project for kubernetes too).
+  - Setup WebSockets + Laravel Echo.
+
 ## License
 
 See the LICENSE file for more details.
